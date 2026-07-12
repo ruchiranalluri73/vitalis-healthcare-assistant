@@ -1,5 +1,11 @@
 # 🏥 Vitalis — Smart Healthcare Assistant
+# 🏥 Vitalis — Smart Healthcare Assistant
 
+🔗 **Live demo:** https://vitalis-healthcare-assistant.onrender.com
+
+A Flask web app that screens for **heart disease** and **diabetes** using
+pre-trained scikit-learn models, then uses Google's **Gemini API** to turn
+the result into a personalized diet, exercise, and lifestyle plan.
 A Flask web app that screens for **heart disease** and **diabetes** using
 pre-trained scikit-learn models, then uses Google's **Gemini API** to turn
 the result into a personalized diet, exercise, and lifestyle plan.
