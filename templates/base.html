@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Smart Healthcare Assistant{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- Persistent ECG signature line along the very top of the viewport -->
+<div class="ecg-topline" aria-hidden="true">
+  <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+    <path class="ecg-path" d="M0,20 L280,20 L300,20 L315,4 L330,36 L345,20 L360,20 L1200,20"/>
+  </svg>
+</div>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="{{ url_for('index') }}" class="brand">
+      <span class="brand-pulse" aria-hidden="true">
+        <svg viewBox="0 0 40 24"><path d="M0,12 L10,12 L13,3 L17,21 L21,12 L40,12" fill="none"/></svg>
+      </span>
+      <span class="brand-text">Vitalis<span class="brand-accent">.</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="{{ url_for('index') }}#about">About</a>
+      <a href="{{ url_for('index') }}#how-it-works">How it works</a>
+      <a href="{{ url_for('heart_form') }}">Heart</a>
+      <a href="{{ url_for('diabetes_form') }}">Diabetes</a>
+      <a href="{{ url_for('chatbot_page') }}" class="nav-cta">AI Assistant</a>
+      <button class="theme-toggle" aria-label="Toggle dark/light mode">&#9728;</button>
+    </div>
+  </div>
+</nav>
+
+<main>
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer" id="contact">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="brand-text">Vitalis<span class="brand-accent">.</span></span>
+      <p>Local ML screening for heart disease &amp; diabetes, paired with AI-guided lifestyle recommendations.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Screenings</h4>
+      <a href="{{ url_for('heart_form') }}">Heart Disease</a>
+      <a href="{{ url_for('diabetes_form') }}">Diabetes</a>
+      <a href="{{ url_for('chatbot_page') }}">AI Assistant</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="mailto:support@vitalis.health">support@vitalis.health</a>
+      <p class="disclaimer">Not a substitute for professional medical advice.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Vitalis Healthcare Assistant</span>
+  </div>
+</footer>
+
+<button id="scrollTopBtn" aria-label="Scroll to top">&uarr;</button>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

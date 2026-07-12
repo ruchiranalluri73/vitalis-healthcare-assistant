@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block title %}Vitalis — Smart Healthcare Assistant{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <span class="hero-eyebrow"><span class="dot-pulse"></span> Local ML screening &middot; instant results</span>
+    <h1>Know your risk before<br>it becomes a <span class="accent">diagnosis</span>.</h1>
+    <p class="lead">Vitalis runs your vitals through pre-trained machine learning models for heart disease and diabetes screening, then pairs the result with AI-guided nutrition, exercise, and lifestyle recommendations.</p>
+    <div class="hero-actions">
+      <a href="{{ url_for('heart_form') }}" class="btn btn-primary">Check heart health</a>
+      <a href="{{ url_for('diabetes_form') }}" class="btn btn-outline">Check diabetes risk</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="glass monitor-card">
+      <div class="monitor-readout">
+        <div>
+          <div class="monitor-label">Screening confidence</div>
+          <div class="monitor-value">94.2%</div>
+        </div>
+        <div class="dot-pulse" style="margin-top:6px;"></div>
+      </div>
+      <div class="monitor-wave">
+        <svg viewBox="0 0 400 90" preserveAspectRatio="none">
+          <path d="M0,45 L90,45 L100,45 L108,10 L118,80 L128,45 L140,45 L160,45 L168,25 L178,60 L186,45 L400,45"/>
+        </svg>
+      </div>
+      <div class="monitor-stats">
+        <div class="monitor-stat"><div class="label">Model</div><div class="value">Random Forest</div></div>
+        <div class="monitor-stat"><div class="label">Risk level</div><div class="value">Low</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section section-tight" id="about">
+  <div class="section-head">
+    <span class="eyebrow-label">About Vitalis</span>
+    <h2>Two trained models. One clear answer.</h2>
+    <p>Vitalis doesn't guess — it runs your data through scikit-learn models that were already trained and evaluated on real clinical datasets, then uses AI only to translate the result into a plan you can actually act on.</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section section-tight">
+  <div class="section-head">
+    <span class="eyebrow-label">Features</span>
+    <h2>Built for clarity, not clutter</h2>
+  </div>
+  <div class="feature-grid">
+    <div class="glass feature-card">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+      </div>
+      <h3>Heart disease screening</h3>
+      <p>13 clinical markers — from resting blood pressure to ST depression — run through a locally-stored classifier trained on cardiac patient data.</p>
+    </div>
+    <div class="glass feature-card">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2s6 7 6 12a6 6 0 0 1-12 0c0-5 6-12 6-12Z"/></svg>
+      </div>
+      <h3>Diabetes risk detection</h3>
+      <p>Glucose, BMI, insulin and more are scaled and scored by a gradient boosting model, returning a confidence-backed prediction in seconds.</p>
+    </div>
+    <div class="glass feature-card">
+      <div class="feature-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h4l2-8 4 16 2-8h4"/></svg>
+      </div>
+      <h3>AI-guided recommendations</h3>
+      <p>Once your result is in, Gemini builds a personalized diet plan, exercise routine, and lifestyle guidance — never the prediction itself.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section section-tight" id="how-it-works">
+  <div class="section-head">
+    <span class="eyebrow-label">How it works</span>
+    <h2>From symptoms to a plan, in four stages</h2>
+  </div>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-stage">Input</div>
+      <div><h3>Fill in your health markers</h3><p>Choose a heart or diabetes screening and enter only the values the model was trained on — nothing more.</p></div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-stage">Local inference</div>
+      <div><h3>The .pkl model predicts locally</h3><p>Your inputs are scaled with the matching StandardScaler and passed straight into the trained classifier — no external API involved in the prediction itself.</p></div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-stage">AI recommendation</div>
+      <div><h3>Gemini builds your plan</h3><p>The result and risk level are sent to Gemini, which returns a diet plan, exercise routine, and lifestyle tips tailored to that outcome.</p></div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-stage">Follow-up</div>
+      <div><h3>Ask the AI assistant anything</h3><p>Keep the conversation going on the chatbot page for general health questions related to your result.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section section-tight">
+  <div class="stats-grid">
+    <div class="glass stat-card"><div class="stat-number">13</div><div class="stat-label">Clinical features screened for heart disease</div></div>
+    <div class="glass stat-card"><div class="stat-number">8</div><div class="stat-label">Metabolic markers screened for diabetes</div></div>
+    <div class="glass stat-card"><div class="stat-number">100%</div><div class="stat-label">Predictions run locally, never off-device</div></div>
+    <div class="glass stat-card"><div class="stat-number">&lt;2s</div><div class="stat-label">Typical time to result</div></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section section-tight" id="faq">
+  <div class="section-head">
+    <span class="eyebrow-label">FAQ</span>
+    <h2>Good to know</h2>
+  </div>
+  <div class="glass faq-list">
+    <div class="faq-item">
+      <button class="faq-question">Is this a medical diagnosis? <span class="faq-icon">+</span></button>
+      <div class="faq-answer">No. Vitalis provides a statistical screening based on trained ML models, not a clinical diagnosis. Always confirm results with a licensed physician.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Does Gemini see my raw health data? <span class="faq-icon">+</span></button>
+      <div class="faq-answer">Gemini only receives your screening result and risk level to generate recommendations — it never performs the prediction itself.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Where do the models run? <span class="faq-icon">+</span></button>
+      <div class="faq-answer">Entirely on the Flask server, using the pre-trained heart_model.pkl / diabetes_model.pkl files and their matching scalers.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Can I ask follow-up questions? <span class="faq-icon">+</span></button>
+      <div class="faq-answer">Yes — after any screening, use the "Ask AI Assistant" button, or visit the chatbot page directly for general health questions.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner glass">
+  <h2>Ready to see where you stand?</h2>
+  <div class="cta-banner-actions">
+    <a href="{{ url_for('heart_form') }}" class="btn btn-primary">Start heart screening</a>
+    <a href="{{ url_for('diabetes_form') }}" class="btn btn-outline">Start diabetes screening</a>
+  </div>
+</div>
+
+{% endblock %}

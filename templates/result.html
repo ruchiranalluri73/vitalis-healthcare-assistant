@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Your Result — Vitalis{% endblock %}
+
+{% block content %}
+{% set risk_class = 'risk-low' if 'Low' in result.risk_level else ('risk-moderate' if 'Moderate' in result.risk_level else 'risk-high') %}
+
+<section class="result-page">
+
+  <div class="glass result-hero {{ risk_class }}">
+    <div>
+      <div class="result-label">{{ result.disease }} screening result</div>
+      <div class="result-title">{{ result.label }}</div>
+      <div class="result-sub">Risk level: <strong>{{ result.risk_level }}</strong></div>
+    </div>
+    <div class="confidence-ring {{ risk_class }}">
+      <svg viewBox="0 0 130 130">
+        <circle class="track" cx="65" cy="65" r="54"></circle>
+        <circle class="value-arc" cx="65" cy="65" r="54" data-percent="{{ result.confidence }}"></circle>
+      </svg>
+      <div class="confidence-text">
+        <span class="num mono">{{ result.confidence }}%</span>
+        <span class="cap">Confidence</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-grid">
+
+    <div class="glass result-card full">
+      <h3>Disease overview</h3>
+      <p>{{ rec.overview }}</p>
+    </div>
+
+    <div class="glass result-card">
+      <h3>Foods to eat</h3>
+      <div class="tag-list">
+        {% for item in rec.foods_to_eat %}<span class="tag eat">{{ item }}</span>{% endfor %}
+      </div>
+    </div>
+
+    <div class="glass result-card">
+      <h3>Foods to avoid</h3>
+      <div class="tag-list">
+        {% for item in rec.foods_to_avoid %}<span class="tag avoid">{{ item }}</span>{% endfor %}
+      </div>
+    </div>
+
+    <div class="glass result-card">
+      <h3>Weekly diet plan</h3>
+      <p>{{ rec.weekly_diet_plan }}</p>
+    </div>
+
+    <div class="glass result-card">
+      <h3>Exercise plan</h3>
+      <p>{{ rec.exercise_plan }}</p>
+    </div>
+
+    <div class="glass result-card">
+      <h3>Lifestyle tips</h3>
+      <ul class="tips">
+        {% for tip in rec.lifestyle_tips %}<li>{{ tip }}</li>{% endfor %}
+      </ul>
+    </div>
+
+    <div class="glass result-card">
+      <h3>Water intake</h3>
+      <p>{{ rec.water_intake }}</p>
+    </div>
+
+    <div class="glass result-card full">
+      <h3>Doctor consultation advice</h3>
+      <p>{{ rec.doctor_consultation }}</p>
+    </div>
+
+  </div>
+  <div class="glass result-card full diet-plan-card">
+    <h3>Get a personalized meal plan</h3>
+    <p style="margin-bottom:18px;">Choose a time range and get a meal plan built from your actual screening result and inputs — separate from the AI Assistant chat.</p>
+
+    <div class="diet-plan-controls">
+      <select id="dietDuration">
+        <option value="3">3 Days</option>
+        <option value="7" selected>1 Week</option>
+        <option value="14">2 Weeks</option>
+        <option value="30">1 Month</option>
+      </select>
+      <button type="button" class="btn btn-primary" id="generateDietPlanBtn">Generate my meal plan</button>
+    </div>
+
+    <div id="dietPlanLoading" class="diet-plan-loading" style="display:none;">
+      <div class="pulse-loader" style="width:40px;height:40px;">
+        <svg viewBox="0 0 100 60"><path d="M0,30 L28,30 L34,6 L42,54 L48,30 L58,30 L64,18 L70,42 L76,30 L100,30"/></svg>
+      </div>
+      <span>Building your meal plan…</span>
+    </div>
+
+    <div id="dietPlanOutput" class="diet-plan-output" style="display:none;"></div>
+  </div>
+  <div class="glass result-card full doctor-finder-card">
+    <h3>Find doctors near you</h3>
+    <p style="margin-bottom:18px;">Enter any city, area, or neighborhood and we'll look up relevant specialists nearby based on your screening result.</p>
+
+    <div class="doctor-finder-controls">
+      <input type="text" id="doctorLocationInput" placeholder="e.g. Vijayawada, or Koramangala Bangalore" autocomplete="off">
+      <button type="button" class="btn btn-primary" id="findDoctorsBtn">Search</button>
+    </div>
+
+    <div id="doctorFinderLoading" class="diet-plan-loading" style="display:none;">
+      <div class="pulse-loader" style="width:40px;height:40px;">
+        <svg viewBox="0 0 100 60"><path d="M0,30 L28,30 L34,6 L42,54 L48,30 L58,30 L64,18 L70,42 L76,30 L100,30"/></svg>
+      </div>
+      <span>Searching nearby…</span>
+    </div>
+
+    <div id="doctorFinderOutput" class="doctor-finder-output"></div>
+  </div>
+
+  <div class="result-cta">
+    <a href="{{ url_for('chatbot_page') }}" class="btn btn-primary">Ask AI Assistant a follow-up question</a>
+  </div>
+
+</section>
+{% endblock %}

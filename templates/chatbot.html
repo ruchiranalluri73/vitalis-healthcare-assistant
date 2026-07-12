@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}AI Assistant — Vitalis{% endblock %}
+
+{% block content %}
+<section class="chat-page">
+  <div class="chat-header">
+    <span class="eyebrow-label">AI Assistant</span>
+    <h1 style="font-size:1.6rem;">Ask a follow-up health question</h1>
+    <p style="color:var(--text-muted); font-size:0.94rem; margin-top:6px;">General nutrition, lifestyle, and wellness guidance. This assistant never diagnoses — it only answers questions, using local screening results as context when relevant.</p>
+  </div>
+
+  <div class="glass chat-window" id="chatWindow">
+    <div class="chat-msg bot">Hi, I'm your Vitalis AI Assistant. Ask me anything about diet, exercise, or general wellness related to your screening.</div>
+  </div>
+
+  <form class="glass chat-input-row" id="chatForm">
+    <input type="text" id="chatInput" placeholder="Type your question…" autocomplete="off" required>
+    <button type="submit" aria-label="Send">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2Z"/></svg>
+    </button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Heart Disease Screening — Vitalis{% endblock %}
+
+{% block content %}
+<section class="form-page">
+  <div class="form-header">
+    <span class="eyebrow-label">Heart disease screening</span>
+    <h1>Enter your cardiac markers</h1>
+    <p>These are exactly the 13 features the trained model was evaluated on. All fields are required for an accurate prediction.</p>
+  </div>
+
+  {% if error %}
+  <div class="form-error-banner">{{ error }}</div>
+  {% endif %}
+
+  <form class="glass form-card" method="POST" action="{{ url_for('predict_heart_route') }}" data-validate>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="age">Age (years)</label>
+        <input type="number" id="age" name="age" min="1" max="120" step="1" required value="{{ form_data.age if form_data else '' }}">
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="sex">Sex</label>
+        <select id="sex" name="sex" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="1" {% if form_data and form_data.sex=='1' %}selected{% endif %}>Male</option>
+          <option value="0" {% if form_data and form_data.sex=='0' %}selected{% endif %}>Female</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="cp">Chest pain type</label>
+        <select id="cp" name="cp" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="0">Typical angina</option>
+          <option value="1">Atypical angina</option>
+          <option value="2">Non-anginal pain</option>
+          <option value="3">Asymptomatic</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="trestbps">Resting blood pressure (mm Hg)</label>
+        <input type="number" id="trestbps" name="trestbps" min="60" max="260" step="1" required value="{{ form_data.trestbps if form_data else '' }}">
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="chol">Serum cholesterol (mg/dl)</label>
+        <input type="number" id="chol" name="chol" min="80" max="700" step="1" required value="{{ form_data.chol if form_data else '' }}">
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="fbs">Fasting blood sugar &gt; 120 mg/dl?</label>
+        <select id="fbs" name="fbs" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="restecg">Resting ECG results</label>
+        <select id="restecg" name="restecg" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="0">Normal</option>
+          <option value="1">ST-T wave abnormality</option>
+          <option value="2">Left ventricular hypertrophy</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="thalach">Max heart rate achieved</label>
+        <input type="number" id="thalach" name="thalach" min="60" max="240" step="1" required value="{{ form_data.thalach if form_data else '' }}">
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="exang">Exercise-induced angina?</label>
+        <select id="exang" name="exang" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="oldpeak">ST depression (oldpeak)</label>
+        <input type="number" id="oldpeak" name="oldpeak" min="0" max="10" step="0.1" required value="{{ form_data.oldpeak if form_data else '' }}">
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="slope">Slope of peak exercise ST segment</label>
+        <select id="slope" name="slope" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="0">Upsloping</option>
+          <option value="1">Flat</option>
+          <option value="2">Downsloping</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="ca">Number of major vessels colored (0-4)</label>
+        <select id="ca" name="ca" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="thal">Thalassemia</label>
+        <select id="thal" name="thal" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="0">Normal</option>
+          <option value="1">Fixed defect</option>
+          <option value="2">Reversible defect</option>
+          <option value="3">Unknown / other</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Run heart screening</button>
+      <span style="color:var(--text-faint); font-size:0.85rem;">Prediction runs locally in under a second.</span>
+    </div>
+  </form>
+</section>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="pulse-loader">
+    <svg viewBox="0 0 100 60"><path d="M0,30 L28,30 L34,6 L42,54 L48,30 L58,30 L64,18 L70,42 L76,30 L100,30"/></svg>
+  </div>
+  <span>Running local prediction model…</span>
+</div>
+{% endblock %}

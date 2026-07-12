@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Diabetes Risk Screening — Vitalis{% endblock %}
+
+{% block content %}
+<section class="form-page">
+  <div class="form-header">
+    <span class="eyebrow-label">Diabetes risk screening</span>
+    <h1>Enter your health markers</h1>
+    <p>These are exactly the 8 features the trained Gradient Boosting model was evaluated on. All fields are required for an accurate prediction.</p>
+  </div>
+
+  {% if error %}
+  <div class="form-error-banner">{{ error }}</div>
+  {% endif %}
+
+  <form class="glass form-card" method="POST" action="{{ url_for('predict_diabetes_route') }}" data-validate>
+    <div class="form-grid">
+
+      <div class="field">
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="Female" {% if form_data and form_data.gender=='Female' %}selected{% endif %}>Female</option>
+          <option value="Male" {% if form_data and form_data.gender=='Male' %}selected{% endif %}>Male</option>
+          <option value="Other" {% if form_data and form_data.gender=='Other' %}selected{% endif %}>Other</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="age">Age (years)</label>
+        <input type="number" id="age" name="age" min="1" max="120" step="1" required value="{{ form_data.age if form_data else '' }}">
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="hypertension">Hypertension?</label>
+        <select id="hypertension" name="hypertension" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="heart_disease">Heart disease?</label>
+        <select id="heart_disease" name="heart_disease" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="smoking_history">Smoking history</label>
+        <select id="smoking_history" name="smoking_history" required>
+          <option value="" disabled {% if not form_data %}selected{% endif %}>Select</option>
+          <option value="never">Never smoked</option>
+          <option value="former">Former smoker</option>
+          <option value="current">Current smoker</option>
+          <option value="not current">Not currently smoking</option>
+          <option value="ever">Smoked at some point</option>
+          <option value="No Info">No information</option>
+        </select>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="bmi">Body mass index (BMI)</label>
+        <input type="number" id="bmi" name="bmi" min="10" max="70" step="0.01" required value="{{ form_data.bmi if form_data else '' }}">
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="hba1c_level">HbA1c level (%)</label>
+        <input type="number" id="hba1c_level" name="hba1c_level" min="3" max="15" step="0.1" required value="{{ form_data.hba1c_level if form_data else '' }}">
+        <span class="hint">Average blood sugar over the past 2-3 months.</span>
+        <span class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="blood_glucose_level">Blood glucose level (mg/dl)</label>
+        <input type="number" id="blood_glucose_level" name="blood_glucose_level" min="50" max="400" step="1" required value="{{ form_data.blood_glucose_level if form_data else '' }}">
+        <span class="field-error"></span>
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Run diabetes screening</button>
+      <span style="color:var(--text-faint); font-size:0.85rem;">Prediction runs locally in under a second.</span>
+    </div>
+  </form>
+</section>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="pulse-loader">
+    <svg viewBox="0 0 100 60"><path d="M0,30 L28,30 L34,6 L42,54 L48,30 L58,30 L64,18 L70,42 L76,30 L100,30"/></svg>
+  </div>
+  <span>Running local prediction model…</span>
+</div>
+{% endblock %}
