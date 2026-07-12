@@ -9,6 +9,7 @@ Routes:
   GET  /diabetes          -> diabetes.html (diabetes form)
   POST /predict/heart     -> runs local .pkl prediction + Gemini recs -> result.html
   POST /predict/diabetes  -> runs local .pkl prediction + Gemini recs -> result.html
+  GET  /result            -> re-renders the last screening's result.html from session
   GET  /chatbot           -> chatbot.html
   POST /api/chatbot       -> AJAX endpoint, returns JSON {answer: "..."}
   POST /api/diet-plan     -> AJAX endpoint, returns JSON meal plan
@@ -22,7 +23,7 @@ never for disease prediction.
 from dotenv import load_dotenv
 load_dotenv()
 
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import os
 import json
 
@@ -85,6 +86,7 @@ def predict_heart_route():
         "confidence": result["confidence"],
         "details": form_data
     })
+    session["last_recommendations"] = recommendations
     session["chat_history"] = []
 
     return render_template("result.html", result=result, rec=recommendations)
@@ -110,9 +112,37 @@ def predict_diabetes_route():
         "confidence": result["confidence"],
         "details": form_data
     })
+    session["last_recommendations"] = recommendations
     session["chat_history"] = []
 
     return render_template("result.html", result=result, rec=recommendations)
+
+
+# ---------------------------------------------------------------------
+# Restore last result (for the chatbot "Back to my results" link)
+# ---------------------------------------------------------------------
+
+@app.route("/result")
+def view_last_result():
+    last_result_raw = session.get("last_result", "")
+    last_rec = session.get("last_recommendations")
+
+    if not last_result_raw or not last_rec:
+        return redirect(url_for("index"))
+
+    try:
+        last_result = json.loads(last_result_raw)
+    except (TypeError, ValueError):
+        return redirect(url_for("index"))
+
+    result = {
+        "disease": last_result.get("disease", ""),
+        "label": last_result.get("label", ""),
+        "risk_level": last_result.get("risk_level", ""),
+        "confidence": last_result.get("confidence", ""),
+    }
+
+    return render_template("result.html", result=result, rec=last_rec)
 
 
 # ---------------------------------------------------------------------
